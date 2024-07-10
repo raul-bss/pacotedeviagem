@@ -1,10 +1,16 @@
 package com.example.pacotedeviagem.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_hospedagem")
-public class Hospedagem {
+public class Hospedagem implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -12,6 +18,12 @@ public class Hospedagem {
 
     private String descricao;
     private Double valor;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "hospedagem")
+    private List<Pacote> pacote = new ArrayList<>();
+
+    
 
     public Hospedagem() {
     }
@@ -44,5 +56,9 @@ public class Hospedagem {
 
     public void setValor(Double valor) {
         this.valor = valor;
+    }
+
+    public List<Pacote> getPacote() {
+        return pacote;
     }
 }

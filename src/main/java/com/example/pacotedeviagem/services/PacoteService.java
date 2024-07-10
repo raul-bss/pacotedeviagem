@@ -23,6 +23,7 @@ public class PacoteService {
     }
 
     public Pacote insert(Pacote obj){
+
         return repository.save(obj);
     }
 

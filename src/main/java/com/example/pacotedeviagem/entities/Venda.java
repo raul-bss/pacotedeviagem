@@ -2,11 +2,14 @@ package com.example.pacotedeviagem.entities;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+import java.time.Instant;
 import java.util.Date;
 
 @Entity
 @Table(name = "tb_venda")
-public class Venda {
+public class Venda implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,21 +17,27 @@ public class Venda {
 
     private String nomeCliente;
     private String formaPagamento;
-    private Date dataVenda;
+    private Instant dataVenda;
+
+
 
     @ManyToOne
     @JoinColumns({
             @JoinColumn(name = "Pacote_id", referencedColumnName = "id"),
-            @JoinColumn(name = "Pacote_Transporte_id", referencedColumnName = "Transporte_id"),
-            @JoinColumn(name = "Pacote_Hospedagem_id", referencedColumnName = "Hospedagem_id")
+            @JoinColumn(name = "Pacote_Transporte_id", referencedColumnName = "transporte_id"),
+            @JoinColumn(name = "Pacote_Hospedagem_id", referencedColumnName = "hospedagem_id")
     })
     private Pacote pacote;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "relatorio_id")
+    private Relatorio relatorio;
 
     public Venda (){
 
     }
 
-    public Venda(Long id, String nomeCliente, String formaPagamento, Date dataVenda, Pacote pacote) {
+    public Venda(Long id, String nomeCliente, String formaPagamento, Instant dataVenda, Pacote pacote) {
         this.id = id;
         this.nomeCliente = nomeCliente;
         this.formaPagamento = formaPagamento;
@@ -60,11 +69,11 @@ public class Venda {
         this.formaPagamento = formaPagamento;
     }
 
-    public Date getDataVenda() {
+    public Instant getDataVenda() {
         return dataVenda;
     }
 
-    public void setDataVenda(Date dataVenda) {
+    public void setDataVenda(Instant dataVenda) {
         this.dataVenda = dataVenda;
     }
 

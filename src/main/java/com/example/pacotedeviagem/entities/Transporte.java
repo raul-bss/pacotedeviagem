@@ -1,19 +1,26 @@
 package com.example.pacotedeviagem.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-public class Transporte {
-
+@Table(name = "tb_transporte")
+public class Transporte implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String tipo;
     private Double valor;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "transporte")
+    private List<Pacote> pacote = new ArrayList<>();
 
     public Transporte() {
     }
@@ -46,5 +53,9 @@ public class Transporte {
 
     public void setValor(Double valor) {
         this.valor = valor;
+    }
+
+    public List<Pacote> getPacote() {
+        return pacote;
     }
 }
